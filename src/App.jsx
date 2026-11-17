@@ -1,71 +1,10 @@
 import { useState } from 'react'
 import xavierPortrait from './assets/xavier-areola.jpg'
+import { developments, illustrativePropertyImages } from './data/developments.js'
 import './App.css'
 
-const developments = [
-  {
-    name: 'The Estate Makati',
-    brand: 'Ayala Land Premier',
-    location: 'Makati City',
-    type: 'Luxury residences',
-    image:
-      'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=85',
-    imageAlt: 'Contemporary residence with a view of the city',
-    tag: 'CITY LIVING',
-  },
-  {
-    name: 'Park Central Towers',
-    brand: 'Ayala Land Premier',
-    location: 'Makati City',
-    type: 'Parkside residences',
-    image:
-      'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=85',
-    imageAlt: 'Elegant high-rise residence framed by greenery',
-    tag: 'MAKATI CBD',
-  },
-  {
-    name: 'The Lattice',
-    brand: 'Alveo',
-    location: 'Parklinks',
-    type: 'Condominium residences',
-    image:
-      'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1200&q=85',
-    imageAlt: 'Warm, modern apartment interior',
-    tag: 'CONNECTED LIVING',
-  },
-  {
-    name: 'Solstice',
-    brand: 'Alveo',
-    location: 'Circuit Makati',
-    type: 'Condominium residences',
-    image:
-      'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1200&q=85',
-    imageAlt: 'Light-filled apartment overlooking the city',
-    tag: 'MAKATI',
-  },
-  {
-    name: 'Arbor Lanes',
-    brand: 'Ayala Land Premier',
-    location: 'Arca South',
-    type: 'Garden residences',
-    image:
-      'https://images.unsplash.com/photo-1600607687644-c7171b42498f?auto=format&fit=crop&w=1200&q=85',
-    imageAlt: 'Peaceful landscaped residential community',
-    tag: 'GREEN SANCTUARY',
-  },
-  {
-    name: 'The Gentry Residences',
-    brand: 'Alveo',
-    location: 'Makati City',
-    type: 'Condominium residences',
-    image:
-      'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=85',
-    imageAlt: 'Modern residential tower in the city',
-    tag: 'URBAN ADDRESS',
-  },
-]
-
 const filters = ['All properties', 'Ayala Land Premier', 'Alveo']
+const brochurePageSize = 4
 const viberLink = 'viber://chat?number=%2B639690853940'
 
 function ArrowIcon() {
@@ -94,18 +33,24 @@ function handleInquirySubmit(event) {
 
 function App() {
   const [activeFilter, setActiveFilter] = useState(filters[0])
+  const [currentPage, setCurrentPage] = useState(0)
   const visibleDevelopments =
     activeFilter === 'All properties'
       ? developments
       : developments.filter((development) => development.brand === activeFilter)
+  const pageCount = Math.ceil(visibleDevelopments.length / brochurePageSize)
+  const pageDevelopments = visibleDevelopments.slice(
+    currentPage * brochurePageSize,
+    (currentPage + 1) * brochurePageSize,
+  )
 
   return (
     <main>
       <header className="topbar">
-        <a className="wordmark" href="#home" aria-label="Xavier Areola property specialist home">
+        <a className="wordmark" href="#home" aria-label="Xavier Areola Realty home">
           <span className="wordmark-mark">XA</span>
           <span>
-            <strong>XAVIER AREOLA</strong>
+            <strong>XAVIER AREOLA REALTY</strong>
             <small>PROPERTY SPECIALIST</small>
           </span>
         </a>
@@ -126,7 +71,10 @@ function App() {
         />
         <div className="hero-shade" />
         <div className="hero-content">
-          <p className="eyebrow hero-eyebrow">Your goals, at the center</p>
+          <p className="eyebrow hero-eyebrow">
+            PRC-Accredited Real Estate Property Specialist<br />
+            Ayala Land Premier
+          </p>
           <h1>The right place<br />starts with <em>you.</em></h1>
           <p className="hero-copy">
             I’m Xavier Areola. I’ll help you explore Ayala Land Premier and
@@ -183,15 +131,15 @@ function App() {
             src={xavierPortrait}
             alt="Xavier Areola, property specialist"
           />
-          <span className="agent-photo-caption">XAVIER AREOLA · PROPERTY SPECIALIST</span>
+          <span className="agent-photo-caption">PRC-ACCREDITED · AYALA LAND PREMIER PROPERTY SPECIALIST</span>
         </div>
         <div className="agent-content">
-          <p className="eyebrow">A personal guide, every step</p>
-          <h2 id="agent-title">The right product<br />for <em>your next move.</em></h2>
+          <p className="eyebrow">PRC-Accredited Real Estate Property Specialist</p>
+          <h2 id="agent-title">Your Ayala Land Premier<br /><em>property specialist.</em></h2>
           <p className="agent-description">
-            Choosing a property is personal. I’ll take the time to understand
-            what matters to you, help compare the options, and guide you toward
-            an Ayala Land Premier or Alveo property that suits your needs.
+            As a PRC-accredited real estate property specialist for Ayala Land
+            Premier, I’ll help you compare residences and guide you through each
+            step toward the right home for your plans.
           </p>
           <div className="agent-points">
             <span><b>01</b> Understand your priorities</span>
@@ -205,76 +153,138 @@ function App() {
             <span className="viber-mark" aria-hidden="true">V</span>
             Inquire on Viber
           </a>
-          <p className="agent-license">PRC No. 0023010</p>
+          <p className="agent-license">PRC ACCREDITED · NO. 0023010</p>
         </div>
       </section>
 
       <section className="properties-section" id="properties">
         <div className="section-heading">
           <div>
-            <p className="eyebrow">The collection</p>
-            <h2>Places to <em>belong.</em></h2>
+            <p className="eyebrow">Online Brochure</p>
+            <h2>Find a place to <em>belong.</em></h2>
           </div>
           <p className="section-description">
-            A selection of residences to explore. Ask about current availability,
-            pricing, and details for each development.
+            Explore Ayala Land Premier and Alveo residences. Ask about current
+            availability, pricing, and details.
           </p>
         </div>
 
-        <div className="property-toolbar">
-          <div className="filters" role="group" aria-label="Filter properties">
-            {filters.map((filter) => (
-              <button
-                className={activeFilter === filter ? 'filter active' : 'filter'}
-                key={filter}
-                onClick={() => setActiveFilter(filter)}
-                type="button"
-                aria-pressed={activeFilter === filter}
-              >
-                {filter}
-              </button>
-            ))}
-          </div>
-          <span className="result-count">
-            {String(visibleDevelopments.length).padStart(2, '0')} DEVELOPMENTS
-          </span>
-        </div>
-
-        <div className="property-grid">
-          {visibleDevelopments.map((development, index) => (
-            <article className="property-card" key={development.name}>
-              <a
-                className="property-image-link"
-                href="#contact"
-                aria-label={`Ask about ${development.name}`}
-              >
-                <img
-                  className="property-image"
-                  src={development.image}
-                  alt={development.imageAlt}
-                  loading={index > 1 ? 'lazy' : 'eager'}
-                />
-                <span className="property-tag">{development.tag}</span>
-                <span className="image-arrow"><ArrowIcon /></span>
+        <div className="brochure-spread">
+          <aside className="brochure-cover">
+            <img
+              className="brochure-cover-image"
+              src={illustrativePropertyImages[0]}
+              alt=""
+              loading="lazy"
+            />
+            <div className="brochure-cover-shade" />
+            <div className="brochure-cover-content">
+              <span className="brochure-cover-kicker">CURATED RESIDENCES</span>
+              <span className="brochure-monogram" aria-hidden="true">XA</span>
+              <h3>Spaces to live<br />life <em>well.</em></h3>
+              <p>Considered residences, chosen around what matters to you.</p>
+              <a className="brochure-open-link" href="#brochure-properties">
+                Open the brochure <ArrowIcon />
               </a>
-              <div className="property-info">
-                <div>
-                  <p className="property-brand">{development.brand}</p>
-                  <h3>{development.name}</h3>
-                  <p className="property-meta">{development.type} <span>·</span> {development.location}</p>
-                </div>
-                <a className="card-link" href="#contact" aria-label={`Inquire about ${development.name}`}>
-                  <ArrowIcon />
-                </a>
+              <span className="brochure-cover-footer">XAVIER AREOLA REALTY · PHILIPPINES</span>
+            </div>
+          </aside>
+          <div className="brochure-page" id="brochure-properties">
+            <div className="brochure-page-heading">
+              <span>INSIDE THE BROCHURE</span>
+              <span>PAGE {String(currentPage + 1).padStart(2, '0')} — {String(pageCount).padStart(2, '0')}</span>
+            </div>
+            <div className="property-toolbar">
+              <div className="filters" role="group" aria-label="Filter properties">
+                {filters.map((filter) => (
+                  <button
+                    className={activeFilter === filter ? 'filter active' : 'filter'}
+                    key={filter}
+                    onClick={() => {
+                      setActiveFilter(filter)
+                      setCurrentPage(0)
+                    }}
+                    type="button"
+                    aria-pressed={activeFilter === filter}
+                  >
+                    {filter}
+                  </button>
+                ))}
               </div>
-            </article>
-          ))}
+              <span className="result-count">
+                {String(visibleDevelopments.length).padStart(2, '0')} DEVELOPMENTS
+              </span>
+            </div>
+
+            <div className="property-grid" key={`${activeFilter}-${currentPage}`}>
+              {pageDevelopments.map((development, index) => (
+                <article className="property-card" key={development.name}>
+                  <a
+                    className="property-image-link"
+                    href="#contact"
+                    aria-label={`Ask about ${development.name}`}
+                  >
+                    <img
+                      className="property-image"
+                      src={illustrativePropertyImages[(currentPage * brochurePageSize + index) % illustrativePropertyImages.length]}
+                      alt="Illustrative residential lifestyle image"
+                      loading={index > 1 ? 'lazy' : 'eager'}
+                    />
+                    <span className="property-tag">{development.tag}</span>
+                    <span className="image-arrow"><ArrowIcon /></span>
+                  </a>
+                  <div className="property-info">
+                    <div>
+                      <p className="property-brand">{development.brand}</p>
+                      <h3>{development.name}</h3>
+                      <p className="property-meta">{development.type} <span>·</span> {development.location}</p>
+                      <a
+                        className="property-source"
+                        href={development.officialUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {development.officialLabel}
+                      </a>
+                    </div>
+                    <a className="card-link" href="#contact" aria-label={`Inquire about ${development.name}`}>
+                      <ArrowIcon />
+                    </a>
+                  </div>
+                </article>
+              ))}
+            </div>
+            <nav className="brochure-pagination" aria-label="Browse brochure pages">
+              <button
+                className="brochure-page-turn brochure-page-previous"
+                type="button"
+                aria-label="Previous brochure page"
+                disabled={currentPage === 0}
+                onClick={() => setCurrentPage((page) => page - 1)}
+              >
+                <ArrowIcon />
+              </button>
+              <div className="brochure-page-position" aria-live="polite">
+                PAGE {String(currentPage + 1).padStart(2, '0')} / {String(pageCount).padStart(2, '0')}
+              </div>
+              <button
+                className="brochure-page-turn"
+                type="button"
+                aria-label="Next brochure page"
+                disabled={currentPage === pageCount - 1}
+                onClick={() => setCurrentPage((page) => page + 1)}
+              >
+                <ArrowIcon />
+              </button>
+            </nav>
+            <p className="availability-note">
+              Names and locations follow official developer catalogs. Listings may
+              include completed or sold-out developments and do not guarantee
+              current availability. Images are illustrative. This is an independent
+              property portfolio, not an official Ayala Land or Alveo website.
+            </p>
+          </div>
         </div>
-        <p className="availability-note">
-          Project details and availability may change. Please inquire for the
-          latest information. This is an independent property portfolio and is
-          not an official Ayala Land or Alveo website.
-        </p>
       </section>
 
       <section className="contact" id="contact">
@@ -357,7 +367,7 @@ function App() {
         <a className="wordmark footer-wordmark" href="#home">
           <span className="wordmark-mark">XA</span>
           <span>
-            <strong>XAVIER AREOLA</strong>
+            <strong>XAVIER AREOLA REALTY</strong>
             <small>PROPERTY SPECIALIST</small>
           </span>
         </a>
